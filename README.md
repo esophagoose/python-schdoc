@@ -1,4 +1,3 @@
-﻿# Altium Schematic Document Parser #
 # Altium Schematic Document Parser #
 
 Python API to read and parse Altium schematic documents.
