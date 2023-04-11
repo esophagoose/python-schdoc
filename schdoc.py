@@ -6,7 +6,8 @@ import logging
 
 logging.basicConfig(level=logging.INFO)
 
-EXPECTED_DIRECTORIES = {'Storage', 'Additional', 'FileHeader'}
+EXPECTED_DIRECTORIES = {"Storage", "Additional", "FileHeader"}
+
 
 class Schematic:
     def __init__(self, path: str):
@@ -22,7 +23,9 @@ class Schematic:
         return f"Schematic<{self.name}>"
 
     def check_header(self, header: str) -> bool:
-        return "Protel for Windows - Schematic Capture Binary File Version 5.0" in header
+        return (
+            "Protel for Windows - Schematic Capture Binary File Version 5.0" in header
+        )
 
     def read(self):
         unparsed_records = []
@@ -40,7 +43,7 @@ class Schematic:
                 diff = directories - EXPECTED_DIRECTORIES
                 logging.warn(f"Extra OLE file streams - didn't expect: {diff}")
             logging.info(f"Finished reading in {self.name}")
-    
+
         for ur in unparsed_records:
             self.records.append(self.parse_record(ur))
         # Find all parent / child relationships
@@ -49,7 +52,7 @@ class Schematic:
             logging.warn("Multiple sheets found!")
         self.sheet = sheets[0]
         return self
-    
+
     def read_records(self, data):
         blocks = []
         streamer = DataStreamer(data)
@@ -63,7 +66,6 @@ class Schematic:
         if self.check_header(blocks[0]):
             return blocks[1:]
         return blocks
-
 
     def read_storage(self, data):
         streamer = DataStreamer(data)
@@ -112,13 +114,10 @@ class DataStreamer:
 
     def read(self, length) -> bytes:
         self.pos += length
-        return self.data[self.pos - length:self.pos]
+        return self.data[self.pos - length : self.pos]
 
     def read_int(self, length) -> int:
         return int.from_bytes(self.read(length), "little")
-    
+
     def eof(self) -> bool:
         return self.pos + 1 >= len(self.data)
-
-
-

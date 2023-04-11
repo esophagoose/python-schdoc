@@ -1,5 +1,6 @@
 from enum import Enum
 
+
 class Record:
     def __init__(self, parameters):
         self.parameters = {}
@@ -561,9 +562,48 @@ class ImplementationParameterListRecord(Record):
         super().__init__(record)
 
 
-RECORD_TYPES = [ComponentRecord, PinRecord, IEEESymbolRecord, LabelRecord, BezierRecord, PolylineRecord, PolygonRecord, EllipseRecord, PiechartRecord, RoundedRectangleRecord, EllipticalArcRecord, ArcRecord, LineRecord, RectangleRecord, SheetSymbolRecord, SheetEntryRecord, PowerPortRecord, PortRecord, NoERCRecord, NetLabelRecord, BusRecord, WireRecord, TextFrameRecord, JunctionRecord, ImageRecord, SheetRecord, SheetNameRecord, SheetFilenameRecord, DesignatorRecord, TemplateFileRecord, ParameterRecord, WarningSignRecord, ImplementationListRecord, ImplementationRecord, ImplementationPinAssociationRecord, ImplementationPinRecord, ImplementationParameterListRecord]
+RECORD_TYPES = [
+    ComponentRecord,
+    PinRecord,
+    IEEESymbolRecord,
+    LabelRecord,
+    BezierRecord,
+    PolylineRecord,
+    PolygonRecord,
+    EllipseRecord,
+    PiechartRecord,
+    RoundedRectangleRecord,
+    EllipticalArcRecord,
+    ArcRecord,
+    LineRecord,
+    RectangleRecord,
+    SheetSymbolRecord,
+    SheetEntryRecord,
+    PowerPortRecord,
+    PortRecord,
+    NoERCRecord,
+    NetLabelRecord,
+    BusRecord,
+    WireRecord,
+    TextFrameRecord,
+    JunctionRecord,
+    ImageRecord,
+    SheetRecord,
+    SheetNameRecord,
+    SheetFilenameRecord,
+    DesignatorRecord,
+    TemplateFileRecord,
+    ParameterRecord,
+    WarningSignRecord,
+    ImplementationListRecord,
+    ImplementationRecord,
+    ImplementationPinAssociationRecord,
+    ImplementationPinRecord,
+    ImplementationParameterListRecord,
+]
 
 RECORD_MAP = {rtype.RECORD_ID: rtype for rtype in RECORD_TYPES}
+
 
 class Color:
     def __init__(self, value):
@@ -573,10 +613,10 @@ class Color:
             self._value = int.from_bytes(bytes.fromhex(value), byteorder="little")
         else:
             raise ValueError(f"Unparsable color: {value}")
-    
+
     def html(self):
         return f"#{self._value.to_bytes(3, 'little').hex()}"
-    
+
     def value(self):
         if self._value is not None:
             return self._value
