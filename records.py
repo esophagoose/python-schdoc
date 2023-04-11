@@ -1,11 +1,5 @@
 from enum import Enum
 
-
-def parse_color(color_string):
-    color = int(color_string) if color_string is not None else 0
-    return f"#{color.to_bytes(3, 'little').hex()}"
-
-
 class Record:
     def __init__(self, parameters):
         self.parameters = {}
@@ -570,6 +564,23 @@ class ImplementationParameterListRecord(Record):
 RECORD_TYPES = [ComponentRecord, PinRecord, IEEESymbolRecord, LabelRecord, BezierRecord, PolylineRecord, PolygonRecord, EllipseRecord, PiechartRecord, RoundedRectangleRecord, EllipticalArcRecord, ArcRecord, LineRecord, RectangleRecord, SheetSymbolRecord, SheetEntryRecord, PowerPortRecord, PortRecord, NoERCRecord, NetLabelRecord, BusRecord, WireRecord, TextFrameRecord, JunctionRecord, ImageRecord, SheetRecord, SheetNameRecord, SheetFilenameRecord, DesignatorRecord, TemplateFileRecord, ParameterRecord, WarningSignRecord, ImplementationListRecord, ImplementationRecord, ImplementationPinAssociationRecord, ImplementationPinRecord, ImplementationParameterListRecord]
 
 RECORD_MAP = {rtype.RECORD_ID: rtype for rtype in RECORD_TYPES}
+
+class Color:
+    def __init__(self, value):
+        if isinstance(value, int):
+            self._value = value
+        elif isinstance(value, str) and value.startswith("#"):
+            self._value = int.from_bytes(bytes.fromhex(value), byteorder="little")
+        else:
+            raise ValueError(f"Unparsable color: {value}")
+    
+    def html(self):
+        return f"#{self._value.to_bytes(3, 'little').hex()}"
+    
+    def value(self):
+        if self._value is not None:
+            return self._value
+        return 0
 
 
 class LineStyle(Enum):
